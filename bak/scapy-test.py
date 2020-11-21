@@ -1,0 +1,28 @@
+from scapy.all import *
+from scapy.layers.l2 import Ether
+
+a1 = b'\x00\x0c)#\x85\xac\x00\x0c)x\x8e\x86\x08\x00E\x00\x00#\xc0M\x00\x00\x80\x11\xf6\xb2\xff\xff\xff\xff\x00\x00\x00\x00\xc3K\x1a\n\x00\x0f\xce\x131234567\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+a2 = b'\x00\x0c)#\x85\xac\x00\x0c)x\x8e\x86\x08\x00E\x00\x00#\xc0M\x00\x00\x80\x11\xf6\xb2\x00\x00\x00\x00\xff\xff\xff\xff\xc3K\x1a\n\x00\x0f\xce\x131234567\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
+writers = PcapWriter('test.pcap')
+
+b1 = Ether(a1)
+b1.time = 0
+b2 = Ether(a2)
+b2.time = b1.time + 0.01
+b3 = Ether(a1)
+b3.time = b2.time + 0.02
+writers.write(pkt=b1)
+writers.write(pkt=b2)
+writers.write(pkt=b3)
+'''
+myreader = PcapReader('test.pcap')
+writers1 = PcapWriter('test1.pcap')
+count=0
+for p in myreader:
+    count=count+1
+    a = p
+    if(count>1):
+        a.time=a.time+0.01
+    writers1.write(pkt=a)
+'''
