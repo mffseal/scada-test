@@ -1,18 +1,6 @@
-from scapy.all import *
-from scapy.layers.l2 import Ether
-from protocol import *
-
-TIME = 0.000000
-
-
-def make_basic_protocol(dmac, smac, dip, sip, dport, sport, pid):
-    ethernet = Ethernet()
-    ethernet.set_basic(dmac, smac)
-    ipv4 = IPv4()
-    ipv4.set_basic(dip, sip)
-    tcp = MyTCP()
-    tcp.set_basic(dport, sport, pid)
-    return ethernet, ipv4, tcp
+from maker import *
+from protocol.s7_protocol import *
+from setting import *
 
 
 def make_basic_s7():
@@ -66,27 +54,13 @@ def make_s7_write_packets(dmac, smac, dip, sip, dport, sport, address, data):
     return s_pkt, d_pkt
 
 
-def pcap_wrapper(pkts):
-    global TIME
-    writers = PcapWriter('out/s7_test.pcap')
-    for p in pkts:
-        pacp_pkt = Ether(p)
-        pacp_pkt.time = TIME
-        TIME += random_time()
-        writers.write(pkt=pacp_pkt)
-    TIME = 0
-
-
 if __name__ == '__main__':
-    spr, dpr = make_s7_read_packets('00:0f:b5:4d:be:f3', '00:0c:29:c0:32:f4', '192.168.1.11', '192.168.1.180', 102,
-                                    4185, b'\x05', b'\x00\x01\x00\x02')
-    spw, dpw = make_s7_write_packets('00:0f:b5:4d:be:f3', '00:0c:29:c0:32:f4', '192.168.1.11', '192.168.1.180', 102,
-                                     4185, b'\x05', b'\x00\x01\x00\x04')
+    # spr, dpr = make_s7_read_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', b'\x00\x01\x00\x02')
+    spw, dpw = make_s7_write_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', b'\x00\x01\x00\x04')
 
     pkts = []
     for i in range(1, 10):
-        spr, dpr = make_s7_read_packets('00:0f:b5:4d:be:f3', '00:0c:29:c0:32:f4', '192.168.1.11', '192.168.1.180', 102,
-                                        4185, b'\x05', b'\x00\x01\x00\x02')
+        spr, dpr = make_s7_read_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', b'\x00\x01\x00\x02')
         pkts.append(spr)
         pkts.append(dpr)
-    pcap_wrapper(pkts)
+    pcap_wrapper([spw, dpw] + pkts, 'out/s7_test.pcap')

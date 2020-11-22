@@ -16,6 +16,21 @@ class Protocol:
                 continue
             self._bit_lens += value['lens']
 
+    def calc_inner_lens(self, layer):
+        inner_lens = 0
+        flag = 0
+        for name, value in vars(self).items():
+            if name.startswith('_'):
+                continue
+            if not value['enabled']:
+                continue
+            if name == layer:
+                flag = 1
+                continue
+            if flag == 1:
+                inner_lens += value['lens']
+        return inner_lens
+
     def set_all_false(self):
         for name, value in vars(self).items():
             if name.startswith('_'):
@@ -88,9 +103,8 @@ class IPv4(Protocol):
         self.destination['value'] = ip_to_bytes(dip)
         self.source['value'] = ip_to_bytes(sip)
 
-    def set_total_length(self, tcp_lens, tpkt_lens, cotp_lens, s7_lens):
-        self.total_length['value'] = sum_bit_to_bytes(self.total_length['lens'], self.bit_lens, tcp_lens, tpkt_lens,
-                                                      cotp_lens, s7_lens)
+    def set_total_length(self, *protocols_lens):
+        self.total_length['value'] = sum_bit_to_bytes(self.total_length['lens'], self.bit_lens, *protocols_lens)
 
 
 class MyTCP(Protocol):
@@ -116,5 +130,8 @@ class MyTCP(Protocol):
         self.sequence_num['value'] = int_to_bytes(MyTCP.__global_tcp_seq[pid], int(self.sequence_num['lens'] / 8))
         self.ack_num['value'] = int_to_bytes(MyTCP.__global_tcp_seq[not pid], int(self.sequence_num['lens'] / 8))
 
-    def set_connection_status(self, pid, tpkt, cotp, s7):
-        MyTCP.__global_tcp_seq[pid] += int((tpkt + cotp + s7) / 8)
+    def set_connection_status(self, pid, *protocols_lens):
+        super_lens = 0
+        for pl in protocols_lens:
+            super_lens += pl
+        MyTCP.__global_tcp_seq[pid] += int(super_lens / 8)

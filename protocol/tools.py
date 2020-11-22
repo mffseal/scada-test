@@ -1,5 +1,4 @@
 from binascii import *
-import random
 
 
 def pile_up(*protocols):
@@ -11,8 +10,8 @@ def pile_up(*protocols):
     packet = 0
     bit_lens = 0
     for p in protocols:
-        # p.check()
-        p.packed
+        p.check()
+        # p.packed
         bit_lens += p.bit_lens
         packet <<= p.bit_lens
         packet |= p.segment
@@ -57,8 +56,3 @@ def sum_bit_to_bytes(bit_lens, *nums):
     sum_int = int(sum_int / 8)
     sum_bytes = int_to_bytes(sum_int, lens)
     return sum_bytes
-
-
-def random_time():
-    uniform = random.uniform(0, 1)
-    return round(uniform, 6)
