@@ -24,10 +24,18 @@ class COTP(Protocol):
         self.parameter = {'value': b'\xc1\x02\x01\x00\xc2\x02\x03\x02\xc0\x01\x09', 'lens': 88, 'enabled': True}
 
     def to_connection(self):
+        """
+        设置COTP为连接模式
+        :return:
+        """
         self.set_all_false()
         self.enable_field(self.length, self.pdu_type, self.destination, self.source, self.opt, self.parameter)
 
     def to_function(self):
+        """
+        设置COTP为功能模式
+        :return:
+        """
         self.set_all_false()
         self.enable_field(self.length, self.pdu_type, self.opt)
 

@@ -8,6 +8,10 @@ class Protocol:
         # {'value': , 'lens': , 'enabled': True}
 
     def calc_bit_lens(self):
+        """
+        计算协议总bit长度
+        :return: int
+        """
         self._bit_lens = 0
         for name, value in vars(self).items():
             if name.startswith('_'):
@@ -17,6 +21,11 @@ class Protocol:
             self._bit_lens += value['lens']
 
     def calc_inner_lens(self, layer):
+        """
+        计算某字段以下的bit长度（不包含本字段）
+        :param layer:  指定开始计算的字段（不包含）
+        :return: int
+        """
         inner_lens = 0
         flag = 0
         for name, value in vars(self).items():
@@ -32,6 +41,10 @@ class Protocol:
         return inner_lens
 
     def set_all_false(self):
+        """
+        关闭所有字段
+        :return:
+        """
         for name, value in vars(self).items():
             if name.startswith('_'):
                 continue
@@ -40,11 +53,20 @@ class Protocol:
             setattr(self, name, temp)
 
     def enable_field(self, *fields):
+        """
+        开启指定字段
+        :param fields: self变量
+        :return:
+        """
         for f in fields:
             f['enabled'] = True
 
     @property
     def packed(self):
+        """
+        协议对象打包为bytes
+        :return: bytes
+        """
         packet = 0
         for name, value in vars(self).items():
             if name.startswith('_'):
@@ -66,6 +88,10 @@ class Protocol:
         return self._segment
 
     def check(self):
+        """
+        debug函数
+        :return:
+        """
         print('------\t', self.__class__.__name__, '检查\t------')
         print(self.packed.to_bytes(int(self.bit_lens / 8), byteorder='big'))
         print('------------------------------')
@@ -79,6 +105,12 @@ class Ethernet(Protocol):
         self.type = {'value': b'\x08\x00', 'lens': 16, 'enabled': True}  # 指定IPv4
 
     def set_basic(self, dmac, smac):
+        """
+        设置mac
+        :param dmac: 目的mac
+        :param smac: 源mac
+        :return:
+        """
         self.destination['value'] = mac_to_bytes(dmac)
         self.source['value'] = mac_to_bytes(smac)
 
@@ -100,6 +132,12 @@ class IPv4(Protocol):
         self.destination = {'value': b'\xc0\xa8\x01\x0b', 'lens': 32, 'enabled': True}  # 目的ip地址
 
     def set_basic(self, dip, sip):
+        """
+        设置ip
+        :param dip: 目的ip
+        :param sip: 源ip
+        :return:
+        """
         self.destination['value'] = ip_to_bytes(dip)
         self.source['value'] = ip_to_bytes(sip)
 
@@ -123,6 +161,13 @@ class MyTCP(Protocol):
         self.urgent_pointer = {'value': b'\x00\x00', 'lens': 16, 'enabled': True}  # 紧急指针
 
     def set_basic(self, dport, sport, pid):
+        """
+        设置端口和身份
+        :param dport: 目的端口
+        :param sport: 源端口
+        :param pid: 身份
+        :return:
+        """
         self.destination['value'] = int_to_bytes(dport, self.destination['lens'])
         self.source['value'] = int_to_bytes(sport, self.source['lens'])
         # 自己的序号设置成预备序号
@@ -131,6 +176,12 @@ class MyTCP(Protocol):
         self.ack_num['value'] = int_to_bytes(MyTCP.__global_tcp_seq[not pid], int(self.sequence_num['lens'] / 8))
 
     def set_connection_status(self, pid, *protocols_lens):
+        """
+        设置序列号
+        :param pid: 身份 0 or 1
+        :param protocols_lens: 上级协议长度，计算下一次序列号
+        :return:
+        """
         super_lens = 0
         for pl in protocols_lens:
             super_lens += pl
