@@ -1,4 +1,5 @@
 from binascii import *
+import crcmod.predefined
 
 
 def pile_up(*protocols):
@@ -56,3 +57,12 @@ def sum_bit_to_bytes(bit_lens, *nums):
     sum_int = int(sum_int / 8)
     sum_bytes = int_to_bytes(sum_int, lens)
     return sum_bytes
+
+
+def calc_crc(*words, pattern):
+    stream = b''
+    for w in words:
+        stream += w
+    crc16 = crcmod.predefined.Crc(pattern)
+    crc16.update(stream)
+    return crc16.crcValue.to_bytes(2, byteorder='little')

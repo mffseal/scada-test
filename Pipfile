@@ -9,6 +9,7 @@ verify_ssl = true
 scapy = "*"
 bitstring = "*"
 numpy = "*"
+crcmod = "*"
 
 [requires]
 python_version = "3.7"

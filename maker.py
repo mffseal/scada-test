@@ -14,6 +14,7 @@ def random_time():
 def pcap_wrapper(pkts, path):
     global TIME
     writers = PcapWriter(path)
+
     for p in pkts:
         pacp_pkt = Ether(p)
         pacp_pkt.time = TIME
