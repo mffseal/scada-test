@@ -11,7 +11,7 @@ def make_basic_s7():
 
 
 def make_s7_read_packets(dmac, smac, dip, sip, dport, sport, address, data):
-    s_ethernet, s_ipv4, s_tcp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
+    s_ethernet, s_ipv4, s_tcp, s_udp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
     s_tpkt, s_cotp, s_s7 = make_basic_s7()
     s_cotp.to_function()
     s_s7.to_ack_read(b'\x00\x00', b'\x02', address)
@@ -19,7 +19,7 @@ def make_s7_read_packets(dmac, smac, dip, sip, dport, sport, address, data):
     s_ipv4.set_total_length(s_tcp.bit_lens, s_tpkt.bit_lens, s_cotp.bit_lens, s_s7.bit_lens)
     s_tcp.set_connection_status(0, s_tpkt.bit_lens, s_cotp.bit_lens, s_s7.bit_lens)
 
-    d_ethernet, d_ipv4, d_tcp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
+    d_ethernet, d_ipv4, d_tcp, d_udp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
     d_tpkt, d_cotp, d_s7 = make_basic_s7()
     d_cotp.to_function()
     d_s7.to_res_read(b'\x04', data, b'\x00\x20', 4)
@@ -33,7 +33,7 @@ def make_s7_read_packets(dmac, smac, dip, sip, dport, sport, address, data):
 
 
 def make_s7_write_packets(dmac, smac, dip, sip, dport, sport, address, data):
-    s_ethernet, s_ipv4, s_tcp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
+    s_ethernet, s_ipv4, s_tcp, s_udp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
     s_tpkt, s_cotp, s_s7 = make_basic_s7()
     s_cotp.to_function()
     s_s7.to_ack_write(b'\x04', data, 4, address)
@@ -41,7 +41,7 @@ def make_s7_write_packets(dmac, smac, dip, sip, dport, sport, address, data):
     s_ipv4.set_total_length(s_tcp.bit_lens, s_tpkt.bit_lens, s_cotp.bit_lens, s_s7.bit_lens)
     s_tcp.set_connection_status(0, s_tpkt.bit_lens, s_cotp.bit_lens, s_s7.bit_lens)
 
-    d_ethernet, d_ipv4, d_tcp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
+    d_ethernet, d_ipv4, d_tcp, d_udp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
     d_tpkt, d_cotp, d_s7 = make_basic_s7()
     d_cotp.to_function()
     d_s7.to_res_write(1)
@@ -59,8 +59,12 @@ if __name__ == '__main__':
     spw, dpw = make_s7_write_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', b'\x00\x01\x00\x04')
 
     pkts = []
-    for i in range(1, 10):
-        spr, dpr = make_s7_read_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', b'\x00\x01\x00\x02')
+    for i in range(1, 50):
+        if i == 35:
+            data = int_to_bytes(100, 4)
+        else:
+            data = int_to_bytes(i, 4)
+        spr, dpr = make_s7_read_packets(SMAC, DMAC, SIP, DIP, 102, 4185, b'\x05', data)
         pkts.append(spr)
         pkts.append(dpr)
     pcap_wrapper([spw, dpw] + pkts, 'out/s7_test.pcap')

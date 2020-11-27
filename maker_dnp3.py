@@ -9,7 +9,7 @@ def make_basic_dnp3():
 
 
 def make_dnp3_read_packets(dmac, smac, dip, sip, dport, sport, address, data):
-    s_ethernet, s_ipv4, s_tcp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
+    s_ethernet, s_ipv4, s_tcp, s_udp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
     s_dnp3 = make_basic_dnp3()
     s_dnp3.to_read_ack(b'\x0a\x00')
     s_ipv4.set_total_length(s_tcp.bit_lens, s_dnp3.bit_lens)

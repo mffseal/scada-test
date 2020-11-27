@@ -27,13 +27,13 @@ def make_modbus_read_packets(dmac, smac, dip, sip, dport, sport, address, data):
 
 
 def make_modbus_write_packets(dmac, smac, dip, sip, dport, sport, address, data):
-    s_ethernet, s_ipv4, s_tcp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
+    s_ethernet, s_ipv4, s_tcp, s_udp = make_basic_protocol(dmac, smac, dip, sip, dport, sport, 0)
     s_modbus = make_basic_modbus()
     s_modbus.to_write_ack(address, data)
     s_ipv4.set_total_length(s_tcp.bit_lens, s_modbus.bit_lens)
     s_tcp.set_connection_status(0, s_modbus.bit_lens)
 
-    d_ethernet, d_ipv4, d_tcp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
+    d_ethernet, d_ipv4, d_tcp, d_udp = make_basic_protocol(smac, dmac, sip, dip, sport, dport, 1)
     d_modbus = make_basic_modbus()
     d_modbus.to_write_res(address, data)
     d_ipv4.set_total_length(d_tcp.bit_lens, d_modbus.bit_lens)

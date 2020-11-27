@@ -7,7 +7,7 @@ TIME = 0.000000
 
 
 def random_time():
-    uniform = random.uniform(0, 1)
+    uniform = random.uniform(0.3, 1)
     return round(uniform, 6)
 
 
@@ -30,4 +30,6 @@ def make_basic_protocol(dmac, smac, dip, sip, dport, sport, pid):
     ipv4.set_basic(dip, sip)
     tcp = MyTCP()
     tcp.set_basic(dport, sport, pid)
-    return ethernet, ipv4, tcp
+    udp = UDP()
+    udp.set_basic(dport, sport)
+    return ethernet, ipv4, tcp, udp

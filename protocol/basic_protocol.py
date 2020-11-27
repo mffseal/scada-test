@@ -186,3 +186,19 @@ class MyTCP(Protocol):
         for pl in protocols_lens:
             super_lens += pl
         MyTCP.__global_tcp_seq[pid] += int(super_lens / 8)
+
+
+class UDP(Protocol):
+    def __init__(self):
+        super().__init__()
+        self.source = {'value': b'\xe5\x62', 'lens': 16, 'enabled': True}
+        self.destination = {'value': b'\x25\x80', 'lens': 16, 'enabled': True}
+        self.length = {'value': b'\x00\x1a', 'lens': 16, 'enabled': True}
+        self.checksum = {'value': b'\x69\x52', 'lens': 16, 'enabled': True}
+
+    def set_basic(self, dport, sport):
+        self.destination['value'] = int_to_bytes(dport, self.destination['lens'])
+        self.source['value'] = int_to_bytes(sport, self.source['lens'])
+
+    def set_total_length(self, *protocols_lens):
+        self.length['value'] = sum_bit_to_bytes(self.length['lens'], self.bit_lens, *protocols_lens)
