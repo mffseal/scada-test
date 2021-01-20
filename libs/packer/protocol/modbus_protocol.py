@@ -25,6 +25,7 @@ class Modbus(Protocol):
         self.enable_field(self.trans_id, self.protocol_id, self.mt_length, self.unit_id, self.function_code,
                           self.reference_num, self.word_count)
 
+        self.function_code['value'] = b'\x03'
         self.reference_num['value'] = address
 
     def to_read_res(self, data):
@@ -32,6 +33,7 @@ class Modbus(Protocol):
         self.enable_field(self.trans_id, self.protocol_id, self.mt_length, self.unit_id, self.function_code,
                           self.byte_code, self.register)
 
+        self.function_code['value'] = b'\x03'
         self.mt_length['value'] = b'\x00\x05'
         self.register['value'] = data
 

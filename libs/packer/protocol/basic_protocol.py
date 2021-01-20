@@ -146,7 +146,7 @@ class IPv4(Protocol):
 
 
 class MyTCP(Protocol):
-    __global_tcp_seq = [1, 1]
+    __global_tcp_seq = [0, 0]
 
     def __init__(self):
         super().__init__()
@@ -159,6 +159,7 @@ class MyTCP(Protocol):
         self.window = {'value': b'\xff\xce', 'lens': 16, 'enabled': True}  # 滑动窗口大小
         self.checksum = {'value': b'\xe1\xe0', 'lens': 16, 'enabled': True}  # 校验和
         self.urgent_pointer = {'value': b'\x00\x00', 'lens': 16, 'enabled': True}  # 紧急指针
+        self.option = {'value': b'\x02\x04\x05\xb4\x01\x01\x04\x02', 'lens': 64, 'enabled': False}
 
     def set_basic(self, dport, sport, pid):
         """

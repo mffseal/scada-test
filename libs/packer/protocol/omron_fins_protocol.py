@@ -96,9 +96,8 @@ class OmronFins(Protocol):
                           self.begin_address_bits, self.num_of_items)
 
         self.omron_icf_field['value'] = b'\x80'
-        self.des_node_number['value'] = b'\x03'
-        self.src_node_number['value'] = b'\xc0'
-        self.des_node_number['value'] = b'\x03'
+        self.des_node_number['value'] = b'\xb4'
+        self.src_node_number['value'] = b'\x0b'
         self.command['value'] = b'\x00\x00\x00\x02'
         self.command_code['value'] = b'\x01\x01'
         self.begin_address['value'] = address
@@ -111,8 +110,8 @@ class OmronFins(Protocol):
                           self.response_data)
 
         self.omron_icf_field['value'] = b'\xc0'
-        self.des_node_number['value'] = b'\xc0'
-        self.src_node_number['value'] = b'\x03'
+        self.des_node_number['value'] = b'\x0b'
+        self.src_node_number['value'] = b'\xb4'
         self.response_code['value'] = b'\x00\x00'
         self.response_data['value'] = data
 
@@ -124,12 +123,12 @@ class OmronFins(Protocol):
                           self.begin_address, self.begin_address_bits, self.num_of_items, self.command_data)
 
         self.omron_icf_field['value'] = b'\x80'
-        self.des_node_number['value'] = b'\x03'
-        self.src_node_number['value'] = b'\xc0'
+        self.des_node_number['value'] = b'\xb4'
+        self.src_node_number['value'] = b'\x0b'
         self.command_code['value'] = b'\x01\x02'
         self.memory_area_code['value'] = b'\x82'
         self.begin_address['value'] = address
-        self.command_data['value'] = b'\x01'
+        self.command_data['value'] = data
 
     def to_udp_res_write(self):
         self.set_all_false()
@@ -138,8 +137,8 @@ class OmronFins(Protocol):
                           self.src_unit_address, self.service_id, self.command_code, self.response_code)
 
         self.omron_icf_field['value'] = b'\xc0'
-        self.des_node_number['value'] = b'\xc0'
-        self.src_node_number['value'] = b'\x03'
+        self.des_node_number['value'] = b'\x0b'
+        self.src_node_number['value'] = b'\xb4'
         self.command_code['value'] = b'\x01\x02'
         self.response_code['value'] = b'\x00\x00'
 

@@ -129,10 +129,10 @@ class S7(Protocol):
         self.request_data_length['value'] = b'\x04'
         self.data_trans_size['value'] = data_trans_size
         self.total_data_length['value'] = int_to_bytes(total_data_lens, int(self.total_data_length['lens'] / 8))
-        self.data['lens'] = total_data_lens * 8
+        self.data['lens'] = (total_data_lens - 4) * 8
         self.db_num['value'] = b'\x00'
         self.area['value'] = b'\x83'  # DB
-        self.pure_data_length['value'] = b'\x00\x04'
+        self.pure_data_length['value'] = b'\x00\x20'  # 纯数据字段长度单位是bit
         self.address['value'] = address
         self.data['value'] = data
 
