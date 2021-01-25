@@ -84,14 +84,15 @@ def make_tcp_hello(dmac, smac, dip, sip, dport, sport):
     return s_pkt1, d_pkt1, s_pkt2
 
 
-def pcap_maker(pkt_maker, path, DMAC, SMAC, DIP, SIP, dport, sport, address):
+def pcap_maker(pkt_maker, path, DMAC, SMAC, DIP, SIP, dport, sport, address=b'\x02', start=1, amount=50, bad_data=100,
+               bad_loc=35, sensitivity=1):
     pkts = []
     data_bit_lens = 4
     if pkt_maker.__name__.startswith('make_dnp3'):
         data_bit_lens = 1
-    for i in range(1, 51):
-        if i == 35:
-            data = int_to_bytes(100, data_bit_lens)
+    for i in range(start, amount + 1, sensitivity):
+        if i == bad_loc:
+            data = int_to_bytes(bad_data, data_bit_lens)
         else:
             data = int_to_bytes(i, data_bit_lens)
         spr, dpr = pkt_maker(DMAC, SMAC, DIP, SIP, dport, sport, address, data)

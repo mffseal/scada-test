@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <!--5秒钟后跳转到指定的页面-->
+    <meta http-equiv="refresh" content="5;url={{ url_for("made", file=file) }}"/>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    {{ super() }}
+    <main role="main" class="inner cover text-center mt-5">
+        <h1 class="cover-heading"><i class="fa fa-spinner fa-pulse center mt-5 mb-5" style="color:orange"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+            <em style="color: dodgerblue">{{ file }}</em> 数据包生成中，请稍后...</h1>
+        <p class="lead m-5">正在为您生成所需的PCAP文件，这可能需要几秒钟，生成完成后会跳转到下载界面，请耐心等待。</p>
+        <p class="lead">
+            <a href="{{ request.referrer }}" class="btn btn-lg btn-secondary">取消生成</a>
+        </p>
+    </main>
+
+{% endblock content %}

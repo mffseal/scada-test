@@ -1,0 +1,65 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
+{% from 'bootstrap/utils.html' import render_messages %}
+{% from 'bootstrap/form.html' import render_field %}
+{% from 'bootstrap/form.html' import render_form %}
+<!DOCTYPE html>
+<html>
+{% block title %}
+    <title>工业互联网测试数据包生成器</title>
+{% endblock %}
+
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap-Flask Demo Application</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <script src="https://kit.fontawesome.com/3bbe9525ca.js" crossorigin="anonymous"></script>
+    {{ bootstrap.load_css() }}
+    <style>
+        body {
+            background-image: url("../static/images/y-so-serious-white.png");
+        }
+    </style>
+{% endblock %}
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    {% block navbar %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for("index") }}"><i class="fa fa-undo"
+                                                                                          style="color:orange"></i>&nbsp;返回首页</a>
+                </li>
+            </ul>
+        </div>
+        <div class="left">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" style="color:darkblue">仿真网络安全测试数据包生成系统</li>
+            </ul>
+        </div>
+    {% endblock %}
+</nav>
+
+<main class="container">
+    {{ render_messages(container=False, dismissible=True) }}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="text-center">
+    {% block footer %}
+        <small> &copy;
+            <script>document.write(new Date().getFullYear())</script>
+            <a href="#" title="Written by Someone">Someone</a>
+        </small>
+    {% endblock %}
+</footer>
+
+{{ bootstrap.load_js() }}
+</body>
+</html>

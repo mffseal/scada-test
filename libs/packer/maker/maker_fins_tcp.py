@@ -1,4 +1,4 @@
-from maker import *
+from libs.packer.maker.maker import *
 from libs.packer.protocol import *
 from setting import *
 
@@ -85,5 +85,5 @@ if __name__ == '__main__':
     #     pkts.append(dpr)
     # pcap_wrapper([spw, dpw] + pkts, 'out/fins_test.pcap')
 
-    sens_r()
-    sens_w()
+    pcap_maker(make_tcp_fins_read_packets, '../out/fins_tcp_r.pcap', DMAC, SMAC, DIP, SIP, 9600, 13472, b'\x05')
+    pcap_maker(make_tcp_fins_write_packets, '../out/fins_tcp_w.pcap', DMAC, SMAC, DIP, SIP, 9600, 13472, b'\x05')

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    <main role="main" class="container text-center">
+        <div class="jumbotron" style="background-color: rgba(233, 236, 239, 0.8) !important;">
+            <h1><i class="fa fa-check center" style="color:orange"></i>&nbsp;&nbsp;&nbsp;&nbsp;<em style="color: dodgerblue">{{ file }}</em> 数据包生成完成</h1>
+            <br>
+            <p class="lead">pcap格式数据包已按要求生成完成，请下载到本地。</p>
+            <br>
+            <a class="btn btn-lg btn-primary" href="{{ url_for("download", file=file) }}" role="button"><i class="fa fa-download" style="color:orange"></i>&nbsp;下载 pcap 文件</a>
+            <a class="btn btn-lg btn-primary ml-5 mr-5" href="{{ url_for("making_logfile", file=file) }}" role="button"><i class="fa fa-clipboard-list" style="color:orange"></i>&nbsp;生成日志文件</a>
+            <a class="btn btn-lg btn-primary" href="/" role="button"><i class="fa fa-undo" style="color:orange"></i>&nbsp;返回首页</a>
+        </div>
+    </main>
+{% endblock content %}

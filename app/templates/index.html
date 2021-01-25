@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">仿真网络安全测试 <br> 数据包生成系统</h1>
+        <p class="lead">针对主流工业互联网通讯协议仿真网络生成pcap格式的数据包，可用于工业互联网仿真网络的安全性测试。</p>
+    </div>
+
+
+    <div class="card-columns mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">工控协议</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">DNP <small class="text-muted">/ 3.0.0</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Distributed Network Protocol</li>
+                    <li>分布式网络规约</li>
+                    <li>应用于自动化组件之间的通讯协议</li>
+                    <li>主站、RTU、及IED间通讯</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("dnp3") }}">生成测试包</a>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">工控协议</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">OMRON <small class="text-muted">/ udp</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>欧姆龙是来自日本的自控设备制造商</li>
+                    <li>Factory Interface Network Service</li>
+                    <li>Fins协议封装在TCP/UDP之上</li>
+                    <li>用于主站、RTU、及IED进行通讯</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("fins_udp") }}">生成测试包</a>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">工控协议</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">MODBUS <small class="text-muted">/ 1.1b</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Modbus是一种串行通信协议</li>
+                    <li>Modbus协议是一个master/slave架构的协议</li>
+                    <li>工业电子设备之间常用的连接方式</li>
+                    <li>通常用来连接远程终端控制系统</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("modbus") }}">生成测试包</a>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">工控协议</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">OMRON <small class="text-muted">/ tcp</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>欧姆龙是来自日本的自控设备制造商</li>
+                    <li>Factory Interface Network Service</li>
+                    <li>Fins协议封装在TCP/UDP之上</li>
+                    <li>用于主站、RTU、及IED进行通讯</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("fins_tcp") }}">生成测试包</a>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">工控协议</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">S7COMM <small class="text-muted">/ 300</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>S7comm是西门子专用的工控协议</li>
+                    <li>S7协议的TCP/IP实现依赖于面向块的服务</li>
+                    <li>S7comm的协议栈包含COTP、TPKT</li>
+                    <li>PDU（协议数据单元）能够通过TCP传送</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("s7") }}">生成测试包</a>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">系统功能</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">其他功能 <small class="text-muted"></small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>批量生成</li>
+                    <li>历史记录</li>
+                    <li>缓存清理</li>
+                    <li>...</li>
+                </ul>
+                <a class="btn btn-lg btn-block btn-primary" href="{{ url_for("tools") }}">进入功能列表</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

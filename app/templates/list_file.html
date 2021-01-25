@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="../static/images/laji.gif" alt="" width="72" height="72">
+        <h2>历史文件存放站&nbsp;&nbsp;<span class="badge badge-warning">临时</span></h2>
+        <p class="lead">在此可下载最近一次生成的各协议对应的数据包和日志文件。</p>
+    </div>
+
+    <br>
+    <div class="form-group jumbotron pt-2 pb-3 text-center"
+         style="background-color: rgba(233, 236, 239, 0.5) !important;">
+        <h1 class="mt-0 mb-5" style="color: gray"><strong><u>PCAP数据包文件</u></strong></h1>
+        {% for pcap in pcaps %}
+            <a class="btn btn-lg btn-primary m-1" href="{{ url_for("download", file=pcap) }}" role="button"><i
+                    class="fa fa-download" style="color:orange"></i>&nbsp;{{ pcap }}</a>
+        {% endfor %}
+    </div>
+    <div class="form-group jumbotron pt-2 pb-3 text-center"
+         style="background-color: rgba(233, 236, 239, 0.5) !important;">
+        <h1 class="mt-0 mb-5" style="color: gray"><strong><u>JSON日志文件</u></strong></h1>
+        {% for json in jsons %}
+            <a class="btn btn-lg btn-success m-1" href="{{ url_for("download", file=json) }}" role="button"><i
+                    class="fa fa-download" style="color:orange"></i>&nbsp;{{ json }}</a>
+        {% endfor %}
+    </div>
+    <div class="form-group jumbotron pt-2 pb-3 text-center"
+         style="background-color: rgba(233, 236, 239, 0.5) !important;">
+        <h1 class="mt-0 mb-5" style="color: gray"><strong><u>ZIP压缩文件</u></strong></h1>
+        {% for zip in zips %}
+            <a class="btn btn-lg btn-success m-1" href="{{ url_for("download", file=zip) }}" role="button"><i
+                    class="fa fa-download" style="color:orange"></i>&nbsp;{{ zip }}</a>
+        {% endfor %}
+    </div>
+    <a href="{{ request.referrer }}" class="btn btn-lg btn-secondary"><i class="fa fa-undo" style="color:orange"></i>&nbsp;返回</a>
+    <a href="{{ url_for("confirm_delete") }}" class="btn btn-lg btn-danger float-right"><i class="fa fa-eraser"
+                                                                                           style="color:orange"></i>&nbsp;清空</a>
+{% endblock content %}

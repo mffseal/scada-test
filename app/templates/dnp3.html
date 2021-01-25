@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="../static/images/send_file.png" alt="" width="72" height="72">
+        <h2>PCAP生成工具&nbsp;&nbsp;<span class="badge badge-warning">DNP V3.0.0</span></h2>
+        <p class="lead">请输入数据包的信息，例如读取寄存器的地址、寄存器数值等信息。</p>
+    </div>
+
+    <br>
+    <form class="ml-5 mr-5 text-center" method="post" action="{{ url_for('dnp3') }}">
+        {{ form.csrf_token }}
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>读取/写入</u></strong></h1>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                {% for radio in form.type %}
+                    <label class="btn btn-primary">
+                        {{ radio }}{{ radio.label(class="m-0") }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>MAC地址</u></strong></h1>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.DMAC.label.text }}</span>
+                    {{ form.DMAC(class="form-control", value="00:0f:b5:4d:be:f3") }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.SMAC.label.text }}</span>
+                    {{ form.SMAC(class="form-control", value="00:0c:29:c0:32:f4") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>IP地址</u></strong></h1>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.DIP.label.text }}</span>
+                    {{ form.DIP(class="form-control", value="192.168.1.11") }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.SIP.label.text }}</span>
+                    {{ form.SIP(class="form-control", value="192.168.1.180") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>端口号</u></strong></h1>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.DPORT.label.text }}</span>
+                    {{ form.DPORT(class="form-control", value=20000) }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.SPORT.label.text }}</span>
+                    {{ form.SPORT(class="form-control", value=42942) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>数据包大小</u></strong></h1>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.amount.label.text }}</span>
+                    {{ form.amount(class="form-control", value=50) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group jumbotron pt-2 pb-3" style="background-color: rgba(233, 236, 239, 0.5) !important;">
+            <h1 class="mt-0 mb-5" style="color: gray"><strong><u>数据包内容</u></strong></h1>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.address.label.text }}</span>
+                    {{ form.address(class="form-control", value=5) }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.start.label.text }}</span>
+                    {{ form.start(class="form-control", value=1) }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.bad_data.label.text }}</span>
+                    {{ form.bad_data(class="form-control", value=100) }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.bad_loc.label.text }}</span>
+                    {{ form.bad_loc(class="form-control", value=35) }}
+                </div>
+            </div>
+            <div class="input-group mb-3 pl-5">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"
+                          style="background-color: #007bff !important; color: white !important;">{{ form.sensitivity.label.text }}</span>
+                    {{ form.sensitivity(class="form-control", value=1) }}
+                </div>
+            </div>
+        </div>
+
+        {{ render_field(form.submit, class='btn btn-primary btn-lg') }}
+    </form>
+{% endblock content %}

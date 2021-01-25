@@ -10,6 +10,7 @@ scapy = "*"
 bitstring = "*"
 numpy = "*"
 crcmod = "*"
+email-validator = "*"
 
 [requires]
 python_version = "3.7"
